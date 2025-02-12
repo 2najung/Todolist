@@ -28,13 +28,19 @@ const TodoItem = ({ todo }: Props) => {
   return (
     <ItemContainer>
       <LeftSection>
-        <CheckCircle completed={todo.completed} onClick={toggleComplete}>
-          {todo.completed && <StyledCheckIcon />}
+        <CheckCircle
+          data-testid="check-button"
+          completed={todo.completed}
+          onClick={toggleComplete}
+        >
+          {todo.completed && (
+            <CheckIcon data-testid="check-icon" fill="#ffffff" />
+          )}
         </CheckCircle>
         <TodoText completed={todo.completed}>{todo.text}</TodoText>
       </LeftSection>
-      <DeleteButton onClick={removeTodo}>
-        <StyledCloseIcon />
+      <DeleteButton data-testid="delete-button" onClick={removeTodo}>
+        <CloseIcon fill="#b9b9b9" />
       </DeleteButton>
     </ItemContainer>
   );
@@ -81,12 +87,4 @@ const DeleteButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-`;
-
-const StyledCheckIcon = styled(CheckIcon)`
-  fill: #ffffff;
-`;
-
-const StyledCloseIcon = styled(CloseIcon)`
-  fill: #b9b9b9;
 `;
