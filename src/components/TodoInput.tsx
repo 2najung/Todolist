@@ -1,21 +1,62 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
+import { useRecoilState } from "recoil";
+import { todoState } from "../store/todo";
 
-interface Props {}
+const TodoInput = () => {
+  const [todos, setTodos] = useRecoilState(todoState);
+  const [inputValue, setInputValue] = useState("");
 
-const TodoInput = ({}: Props) => {
-  return <Container></Container>;
+  const handleAddTodo = () => {
+    if (inputValue.trim() === "" || inputValue.length > 20) return;
+    setTodos([
+      ...todos,
+      { id: Date.now(), text: inputValue, completed: false },
+    ]);
+    setInputValue("");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleAddTodo();
+    }
+  };
+
+  return (
+    <InputContainer>
+      <Input
+        type="text"
+        placeholder="할 일을 입력해 주세요"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyPress}
+      />
+    </InputContainer>
+  );
 };
 
 export default TodoInput;
 
-const Container = styled.div`
+const InputContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
+`;
+
+const Input = styled.input`
+  width: 737px;
+  border-radius: 24px;
+  padding: 32px;
+  border: none;
+  outline: none;
+  background-color: #e5e5e5;
+
+  box-sizing: border-box;
+  &::placeholder {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+    color: #b9b9b9;
+  }
 `;
