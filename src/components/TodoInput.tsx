@@ -51,8 +51,8 @@ const Input = styled.input`
   border: none;
   outline: none;
   background-color: #e5e5e5;
-
   box-sizing: border-box;
+
   &::placeholder {
     font-size: 20px;
     line-height: 28px;

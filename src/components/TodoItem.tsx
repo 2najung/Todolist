@@ -1,21 +1,92 @@
 "use client";
 import React from "react";
 import styled from "@emotion/styled";
+import { useRecoilState } from "recoil";
+import { todoState, Todo } from "../store/todo";
+import CheckIcon from "../../public/check.svg";
+import CloseIcon from "../../public/close.svg";
 
-interface Props {}
+interface Props {
+  todo: Todo;
+}
 
-const TodoItem = ({}: Props) => {
-  return <Container></Container>;
+const TodoItem = ({ todo }: Props) => {
+  const [todos, setTodos] = useRecoilState(todoState);
+
+  const toggleComplete = () => {
+    setTodos((prev) =>
+      prev.map((t) =>
+        t.id === todo.id ? { ...t, completed: !t.completed } : t
+      )
+    );
+  };
+
+  const removeTodo = () => {
+    setTodos((prev) => prev.filter((t) => t.id !== todo.id));
+  };
+
+  return (
+    <ItemContainer>
+      <LeftSection>
+        <CheckCircle completed={todo.completed} onClick={toggleComplete}>
+          {todo.completed && <StyledCheckIcon />}
+        </CheckCircle>
+        <TodoText completed={todo.completed}>{todo.text}</TodoText>
+      </LeftSection>
+      <DeleteButton onClick={removeTodo}>
+        <StyledCloseIcon />
+      </DeleteButton>
+    </ItemContainer>
+  );
 };
 
 export default TodoItem;
 
-const Container = styled.div`
+const ItemContainer = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
+  justify-content: space-between;
+  padding: 32px 16px;
+  box-sizing: border-box;
+`;
+
+const LeftSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const CheckCircle = styled.div<{ completed: boolean }>`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid
+    ${({ completed }) => (completed ? "transparent" : "#E5E5E5")};
+  background-color: ${({ completed }) =>
+    completed ? "#2182F3" : "transparent"};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const TodoText = styled.span<{ completed: boolean }>`
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: ${({ completed }) => (completed ? "#868686" : "#000")};
+`;
+
+const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+const StyledCheckIcon = styled(CheckIcon)`
+  fill: #ffffff;
+`;
+
+const StyledCloseIcon = styled(CloseIcon)`
+  fill: #b9b9b9;
 `;
