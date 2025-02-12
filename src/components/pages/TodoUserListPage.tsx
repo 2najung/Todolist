@@ -2,7 +2,6 @@
 import React from "react";
 import styled from "@emotion/styled";
 import TodoInput from "../TodoInput";
-import TodoFilter from "../TodoFilter";
 import TodoList from "../TodoList";
 
 interface Props {}
@@ -12,7 +11,6 @@ const TodoUserListPage = ({}: Props) => {
     <Container>
       <Title>To Do List</Title>
       <TodoInput />
-      <TodoFilter />
       <TodoList />
     </Container>
   );
