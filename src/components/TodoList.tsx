@@ -18,13 +18,17 @@ const TodoList = () => {
 
   return (
     <ListContainer>
-      <TodoFilter filter={filter} setFilter={setFilter} />
-      <CountText>총 {filteredTodos.length}개</CountText>
-      {filteredTodos.length === 0 ? (
-        <p>할 일이 없습니다.</p>
-      ) : (
-        filteredTodos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
-      )}
+      <FixedHeader>
+        <TodoFilter filter={filter} setFilter={setFilter} />
+        <CountText>총 {filteredTodos.length}개</CountText>
+      </FixedHeader>
+      <ScrollableList>
+        {filteredTodos.length === 0 ? (
+          <p>할 일이 없습니다.</p>
+        ) : (
+          filteredTodos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
+        )}
+      </ScrollableList>
     </ListContainer>
   );
 };
@@ -33,6 +37,7 @@ export default TodoList;
 
 const ListContainer = styled.div`
   width: 737px;
+  max-height: 580px;
   margin-top: 32px;
   padding: 32px;
   background-color: #fff;
@@ -48,4 +53,31 @@ const CountText = styled.p`
   letter-spacing: 0%;
   padding: 16px;
   margin: 0;
+`;
+
+const FixedHeader = styled.div`
+  top: 0;
+  background-color: white;
+  z-index: 10;
+  padding-bottom: 10px;
+`;
+
+const ScrollableList = styled.div`
+  max-height: 350px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d1d1d1;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 `;
