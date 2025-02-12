@@ -8,8 +8,21 @@ const TodoInput = () => {
   const [todos, setTodos] = useRecoilState(todoState);
   const [inputValue, setInputValue] = useState("");
 
+  const incompleteTodos = todos.filter((todo) => !todo.completed).length;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length <= 20) {
+      setInputValue(e.target.value);
+    }
+  };
+
   const handleAddTodo = () => {
-    if (inputValue.trim() === "" || inputValue.length > 20) return;
+    if (inputValue.trim() === "") return;
+    if (incompleteTodos >= 10) {
+      alert("미완료된 할 일이 10개를 초과할 수 없습니다.");
+      return;
+    }
+
     setTodos([
       ...todos,
       { id: Date.now(), text: inputValue, completed: false },
@@ -27,9 +40,9 @@ const TodoInput = () => {
     <InputContainer>
       <Input
         type="text"
-        placeholder="할 일을 입력해 주세요"
+        placeholder="할 일을 입력하세요"
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={handleInputChange}
         onKeyDown={handleKeyPress}
       />
     </InputContainer>
